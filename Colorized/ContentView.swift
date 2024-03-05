@@ -13,6 +13,13 @@ struct ContentView: View {
     @State private var greenSliderValue = 127.0
     @State private var blueSliderValue = 127.0
     
+    @State private var redTextFieldValue = "127"
+    @State private var greenTextFieldValue = "127"
+    @State private var blueTextFieldValue = "127"
+
+    @State private var isPresented = false
+    @FocusState private var keyboardFocused: Bool
+    
     var body: some View {
         ZStack {
             Color(red: 83 / 255, green: 82 / 255, blue: 237 / 255)
@@ -25,14 +32,49 @@ struct ContentView: View {
                     blueSliderBalue: $blueSliderValue
                 )
                 
-                SliderView(color: .red, sliderValue: $redSliderValue)
-                SliderView(color: .green, sliderValue: $greenSliderValue)
-                SliderView(color: .blue, sliderValue: $blueSliderValue)
+                SliderView(color: .red, sliderValue: $redSliderValue, textFieldValue: $redTextFieldValue)
+                SliderView(color: .green, sliderValue: $greenSliderValue, textFieldValue: $greenTextFieldValue)
+                SliderView(color: .blue, sliderValue: $blueSliderValue, textFieldValue: $blueTextFieldValue)
                 
                 Spacer()
             }
             .padding()
         }
+        
+        .onTapGesture {
+            hideKeyboard()
+        }
+//        .alert("Wrong Format", isPresented: $isPresented, actions: {}) {
+//            Text("Enter correct data")
+//        }
+        
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                
+                Button(action: {
+                    keyboardFocused = false
+                    hideKeyboard()
+                }, label: {
+                    Text("Done")
+                })
+                .alert("Wrong Format", isPresented: $isPresented, actions: {}) {
+                    Text("Enter correct data")
+                }
+            }
+        }
+    }
+    
+    private func hideKeyboard() {
+        
+        if (0...255).contains(Double(redTextFieldValue) ?? 0){
+            redSliderValue = Double(redTextFieldValue) ?? 0
+        } else {
+            redTextFieldValue = ""
+            isPresented.toggle()
+        }
+
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
     }
 }
 
