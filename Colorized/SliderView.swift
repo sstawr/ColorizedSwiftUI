@@ -10,7 +10,7 @@ import SwiftUI
 struct SliderView: View {
     let color: Color
     @Binding var sliderValue: Double
-    @Binding var textFieldValue: String
+    @Binding var textFieldValue: Double
     
     var body: some View {
         HStack {
@@ -21,13 +21,10 @@ struct SliderView: View {
                 .tint(color)
                 .animation(.easeOut, value: sliderValue)
             
-            TextField("Value", text: $textFieldValue)
+            TextField("Value", value: $textFieldValue, formatter: NumberFormatter())
                 .padding(EdgeInsets(top: 6, leading: 6, bottom: 6, trailing: 6))
                 .frame(width: 60)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 4)
-                        .stroke(Color.white, lineWidth: 1)
-                )
+                .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.white, lineWidth: 1))
                 .foregroundStyle(Color.white)
                 .keyboardType(.numberPad)
         }
@@ -35,8 +32,8 @@ struct SliderView: View {
 }
 
 struct SliderViewPreviews: PreviewProvider {
-    @State static var previewSliderValue = 50.0
-    @State static var textFieldValue = "50"
+    @State static var previewSliderValue: Double = 50.0
+    @State static var textFieldValue: Double = 50.0
     
     static var previews: some View {
         SliderView(color: .red, sliderValue: $previewSliderValue, textFieldValue: $textFieldValue)

@@ -13,9 +13,9 @@ struct ContentView: View {
     @State private var greenSliderValue = 127.0
     @State private var blueSliderValue = 127.0
     
-    @State private var redTextFieldValue = "127"
-    @State private var greenTextFieldValue = "127"
-    @State private var blueTextFieldValue = "127"
+    @State private var redTextFieldValue = 127.0
+    @State private var greenTextFieldValue = 127.0
+    @State private var blueTextFieldValue = 127.0
 
     @State private var isPresented = false
     @FocusState private var keyboardFocused: Bool
@@ -67,10 +67,10 @@ struct ContentView: View {
     
     private func hideKeyboard() {
         
-        if (0...255).contains(Double(redTextFieldValue) ?? 0){
-            redSliderValue = Double(redTextFieldValue) ?? 0
+        if (0...255).contains(redSliderValue){
+            redSliderValue = redTextFieldValue
         } else {
-            redTextFieldValue = ""
+            redTextFieldValue = 0
             isPresented.toggle()
         }
 
